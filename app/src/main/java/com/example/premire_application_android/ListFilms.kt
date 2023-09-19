@@ -3,20 +3,15 @@ package com.example.premire_application_android
 import FilmViewModel
 import ImageViewModel
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,7 +26,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
+import java.io.File
+import java.io.FileOutputStream
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -113,6 +113,7 @@ fun BottomNavBar(){
 }
 
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun listFilms(filmVM: FilmViewModel, imageVM: ImageViewModel){
     val movies by filmVM.movies.collectAsState()
@@ -120,22 +121,44 @@ fun listFilms(filmVM: FilmViewModel, imageVM: ImageViewModel){
 
     if(movies.results.isEmpty()){
         filmVM.getFilmInitiaux()
-        Log.d("Film", "Film récupérés")
-        for(movie in movies.results){
-            imageVM.getImage(movie.backdrop_path)
-        }
     }
-    LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.padding(80.dp)){
+    if(movies.results.isNotEmpty()){
+        imageVM.getImage("w185" + movies.results[0].title)
+        val inputStream = image?.byteStream()
+        val context = requireContext();
+        val file = File(context.filesDir, "${movies.results[0].title}.jpg") // Define a file path
+        val outputStream = FileOutputStream(file)
+
+        val buffer = ByteArray(4096)
+        var bytesRead: Int
+        if (inputStream != null) {
+            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                outputStream.write(buffer, 0, bytesRead)
+            }
+            inputStream.close()
+            outputStream.close()
+        }
+
+        val painter = rememberImagePainter(
+            data = image?.byteStream(),
+            builder = {
+                crossfade(true)
+            })
+
+        Image(painter = painter, contentDescription = "Image film")
+    }
+
+    /*LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.padding(80.dp)){
         items(movies.results){ movie ->
-            ElevatedButton(onClick = { /*TODO*/ }) {
+            ElevatedButton(onClick = { }) {
                 Image(
-                    painter = painterResource(id = image),
+                    painter = painter,
                     contentDescription = "Image film ${movie.title}"
                 )
                 Text(text = movie.title)
             }
         }
-    }
+    }*/
 }
 
 

@@ -75,5 +75,5 @@ dependencies {
     //Navigation
     implementation ("androidx.navigation:navigation-compose:2.5.3")
     // RememberImagePainter
-    implementation ("com.google.accompanist:accompanist-coil:0.16.0")
+    implementation ("io.coil-kt:coil-compose:1.3.0")
 }
