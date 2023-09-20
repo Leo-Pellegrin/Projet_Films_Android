@@ -6,9 +6,10 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class FilmViewModel: ViewModel(){
+class MainViewModel: ViewModel(){
     val movies = MutableStateFlow<TmdbMovieResult>(TmdbMovieResult())
-    //val image = MutableStateFlow()
+    val series = MutableStateFlow<TmdbSeriesResult>(TmdbSeriesResult())
+    val persons = MutableStateFlow<TmdbPersonResult>(TmdbPersonResult())
 
     // Initialisation de l'interface
     val retrofit = Retrofit.Builder()
@@ -20,6 +21,17 @@ class FilmViewModel: ViewModel(){
     fun getFilmInitiaux(){
         viewModelScope.launch {
             movies.value = api.lastmovies("166e544a3195c0c362b7c9294e90775d")
+        }
+    }
+    fun getSeriesInitiaux(){
+        viewModelScope.launch {
+            series.value = api.lastseries("166e544a3195c0c362b7c9294e90775d")
+        }
+    }
+
+    fun getPersonsInitiaux(){
+        viewModelScope.launch {
+            persons.value = api.lastpersons("166e544a3195c0c362b7c9294e90775d")
         }
     }
 }
