@@ -50,5 +50,9 @@ fun Screen(windowclass : WindowSizeClass){
         composable("PersonsScreen"){
             PersonsScreen(navController)
         }
+        composable("DetailMovie/{movieid}"){ backStackEntry ->
+            val movieId = backStackEntry.arguments?.getString("movieid") ?: ""
+            DetailMovie(navController, movieId)
+        }
     }
 }

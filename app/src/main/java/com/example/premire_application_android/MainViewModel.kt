@@ -10,6 +10,7 @@ class MainViewModel: ViewModel(){
     val movies = MutableStateFlow<TmdbMovieResult>(TmdbMovieResult())
     val series = MutableStateFlow<TmdbSeriesResult>(TmdbSeriesResult())
     val persons = MutableStateFlow<TmdbPersonResult>(TmdbPersonResult())
+    val movie = MutableStateFlow<TmdbMovieDetail>(TmdbMovieDetail())
 
     // Initialisation de l'interface
     val retrofit = Retrofit.Builder()
@@ -32,6 +33,12 @@ class MainViewModel: ViewModel(){
     fun getPersonsInitiaux(){
         viewModelScope.launch {
             persons.value = api.lastpersons("166e544a3195c0c362b7c9294e90775d")
+        }
+    }
+
+    fun getMovieDetail(movieid: String){
+        viewModelScope.launch {
+            movie.value = api.moviedetails(movieid, "166e544a3195c0c362b7c9294e90775d")
         }
     }
 }

@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -70,7 +71,9 @@ fun ListPersons(PersonsVM: MainViewModel) {
                                 }),
                             contentDescription = "Image film ${person.name}"
                         )
-                        Text(text = person.name)
+                        Text(text = person.name,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(top = 5.dp))
                     }
                 }
             }

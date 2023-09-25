@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -60,7 +61,7 @@ fun ListSeries(SeriesVM: MainViewModel) {
                         modifier = Modifier.fillMaxSize()){
                         Image(
                             painter = rememberImagePainter(
-                                data = "https://image.tmdb.org/t/p/w780" + serie.backdrop_path,
+                                data = "https://image.tmdb.org/t/p/w780" + serie.poster_path,
                                 builder = {
                                     crossfade(true)
                                     size(
@@ -70,7 +71,16 @@ fun ListSeries(SeriesVM: MainViewModel) {
                                 }),
                             contentDescription = "Image film ${serie.name}"
                         )
-                        Text(text = serie.name)
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxSize()
+                        ){
+                            Text(
+                                text = serie.name,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(top = 5.dp))
+                        }
                     }
                 }
             }
