@@ -1,6 +1,5 @@
 package com.example.premire_application_android
 
-import Genre
 import MainViewModel
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -33,15 +32,15 @@ import java.util.Locale
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun DetailMovie(navController: NavController, movieId: String) {
-    val MovieDetailVM: MainViewModel = viewModel()
-    val movie by MovieDetailVM.movie.collectAsState()
+fun DetailSerie(navController: NavController, serieId: String) {
+    val SerieDetailMV: MainViewModel = viewModel()
+    val serie by SerieDetailMV.serie.collectAsState()
 
-    if(movie.title == ""){
-        MovieDetailVM.getMovieDetail(movieId)
+    if(serie.name == ""){
+        SerieDetailMV.getSerieDetail(serieId)
     }
-    if (movie.title != "") {
-        //Column Globale
+    if (serie.name != "") {
+    //Column Globale
         LazyColumn() {
             // Titre + Image de fond du film
             item {
@@ -50,19 +49,19 @@ fun DetailMovie(navController: NavController, movieId: String) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = movie.title,
+                        text = serie.name,
                         fontWeight = FontWeight.Bold,
                         fontSize = 30.sp,
                         modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)
                     )
                     Image(
                         painter = rememberImagePainter(
-                            data = "https://image.tmdb.org/t/p/w1280" + movie.backdrop_path,
+                            data = "https://image.tmdb.org/t/p/w1280" + serie.backdrop_path,
                             builder = {
                                 crossfade(true)
                                 size(600, 600)
                             }),
-                        contentDescription = "Image film ${movie.title}",
+                        contentDescription = "Image film ${serie.name}",
                         Modifier
                             .padding(start = 15.dp, end = 15.dp)
                             .fillMaxWidth()
@@ -77,12 +76,12 @@ fun DetailMovie(navController: NavController, movieId: String) {
                 ) {
                     Image(
                         painter = rememberImagePainter(
-                            data = "https://image.tmdb.org/t/p/w1280" + movie.poster_path,
+                            data = "https://image.tmdb.org/t/p/w1280" + serie.poster_path,
                             builder = {
                                 crossfade(true)
                                 size(400, 400)
                             }),
-                        contentDescription = "Image film ${movie.title}",
+                        contentDescription = "Image film ${serie.name}",
                         Modifier.padding(start = 25.dp, end = 10.dp, top = 5.dp)
                     )
                     Column(
@@ -92,7 +91,7 @@ fun DetailMovie(navController: NavController, movieId: String) {
                     ) {
                         Text(
                             text = formatDate(
-                                movie.release_date,
+                                serie.first_air_date,
                                 "yyyy-dd-MM",
                                 "dd MMM yyyy",
                                 Locale.FRANCE
@@ -103,7 +102,7 @@ fun DetailMovie(navController: NavController, movieId: String) {
                         )
 
                         Text(
-                            text = getGenres(movie.genres),
+                            text = getGenres(serie.genres),
                             fontStyle = FontStyle.Italic,
                             modifier = Modifier.padding(top = 15.dp, end = 15.dp)
                         )
@@ -124,17 +123,14 @@ fun DetailMovie(navController: NavController, movieId: String) {
                         modifier = Modifier.padding(top = 15.dp, end = 15.dp)
                     )
                     Text(
-                        text = movie.overview,
+                        text = serie.overview,
                         modifier = Modifier.padding(top = 15.dp, end = 15.dp)
                     )
                 }
             }
             // Têtes d'affiches
-            item {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(start = 10.dp)
-                ){
+            if(serie.credits.cast.isNotEmpty()){
+                item {
                     Text(
                         text = "Têtes d'affiches",
                         color = Color.Black,
@@ -144,7 +140,7 @@ fun DetailMovie(navController: NavController, movieId: String) {
                     )
                 }
             }
-            items(movie.credits.cast.take(10)){ cast ->
+            items(serie.credits.cast.take(10)){ cast ->
                 FloatingActionButton(
                     onClick = { navController.navigate("DetailPerson/${cast.id}") },
                     modifier = Modifier.padding(20.dp),
@@ -194,10 +190,3 @@ fun DetailMovie(navController: NavController, movieId: String) {
 }
 
 
-fun getGenres(genres: List<Genre>): String {
-    var genresString = ""
-    for (genre in genres) {
-        genresString += genre.name + " & "
-    }
-    return genresString.dropLast(2)
-}

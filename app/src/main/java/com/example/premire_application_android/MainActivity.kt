@@ -54,5 +54,17 @@ fun Screen(windowclass : WindowSizeClass){
             val movieId = backStackEntry.arguments?.getString("movieid") ?: ""
             DetailMovie(navController, movieId)
         }
+        composable("DetailSerie/{serieid}"){ backStackEntry ->
+            val serieId = backStackEntry.arguments?.getString("serieid") ?: ""
+            DetailSerie(navController, serieId)
+        }
+        composable("DetailPerson/{personid}"){ backStackEntry ->
+            val personId = backStackEntry.arguments?.getString("personid") ?: ""
+            DetailPerson(navController, personId)
+        }
+        composable("SearchScreen/{search}"){ backStackEntry ->
+            val search = backStackEntry.arguments?.getString("search") ?: ""
+            SearchScreen(navController, search)
+        }
     }
 }

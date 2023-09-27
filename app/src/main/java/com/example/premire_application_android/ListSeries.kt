@@ -34,19 +34,19 @@ fun SeriesScreen(navController: NavController){
     val mainViewModel: MainViewModel = viewModel()
     Scaffold(
         topBar = {
-            TopNavBar()
+            TopNavBar(navController)
         },
         bottomBar = {
             BottomNavBar(navController)
         }
     ){
-        ListSeries(mainViewModel)
+        ListSeries(mainViewModel, navController)
     }
 }
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun ListSeries(SeriesVM: MainViewModel) {
+fun ListSeries(SeriesVM: MainViewModel, navController: NavController) {
     val series by SeriesVM.series.collectAsState()
 
     if (series.results.isEmpty()) {
@@ -55,7 +55,7 @@ fun ListSeries(SeriesVM: MainViewModel) {
     if (series.results.isNotEmpty()) {
         LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.padding(top = 60.dp, bottom = 60.dp)) {
             items(series.results) { serie ->
-                FloatingActionButton(onClick = { }, modifier = Modifier.padding(20.dp), containerColor = Color.White) {
+                FloatingActionButton(onClick = { navController.navigate("DetailSerie/${serie.id}")}, modifier = Modifier.padding(20.dp), containerColor = Color.White) {
                     Column( verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.fillMaxSize()){
@@ -79,7 +79,7 @@ fun ListSeries(SeriesVM: MainViewModel) {
                             Text(
                                 text = serie.name,
                                 fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(top = 5.dp))
+                                modifier = Modifier.padding(top = 5.dp, start = 10.dp))
                         }
                     }
                 }

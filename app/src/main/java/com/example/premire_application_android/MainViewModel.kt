@@ -11,6 +11,8 @@ class MainViewModel: ViewModel(){
     val series = MutableStateFlow<TmdbSeriesResult>(TmdbSeriesResult())
     val persons = MutableStateFlow<TmdbPersonResult>(TmdbPersonResult())
     val movie = MutableStateFlow<TmdbMovieDetail>(TmdbMovieDetail())
+    val serie = MutableStateFlow<TmdbSerieDetail>(TmdbSerieDetail())
+    val person = MutableStateFlow<TmdbPersonDetail>(TmdbPersonDetail())
 
     // Initialisation de l'interface
     val retrofit = Retrofit.Builder()
@@ -21,12 +23,12 @@ class MainViewModel: ViewModel(){
 
     fun getFilmInitiaux(){
         viewModelScope.launch {
-            movies.value = api.lastmovies("166e544a3195c0c362b7c9294e90775d")
+            movies.value = api.lastmovies("166e544a3195c0c362b7c9294e90775d", "fr")
         }
     }
     fun getSeriesInitiaux(){
         viewModelScope.launch {
-            series.value = api.lastseries("166e544a3195c0c362b7c9294e90775d")
+            series.value = api.lastseries("166e544a3195c0c362b7c9294e90775d", "fr")
         }
     }
 
@@ -38,7 +40,37 @@ class MainViewModel: ViewModel(){
 
     fun getMovieDetail(movieid: String){
         viewModelScope.launch {
-            movie.value = api.moviedetails(movieid, "166e544a3195c0c362b7c9294e90775d")
+            movie.value = api.moviedetails(movieid, "166e544a3195c0c362b7c9294e90775d", "fr")
+        }
+    }
+
+    fun getSerieDetail(serieid: String){
+        viewModelScope.launch {
+            serie.value = api.seriedetails(serieid, "166e544a3195c0c362b7c9294e90775d", "fr")
+        }
+    }
+
+    fun getPersonDetail(personid: String){
+        viewModelScope.launch {
+            person.value = api.persondetails(personid, "166e544a3195c0c362b7c9294e90775d", "fr")
+        }
+    }
+
+    fun getPersonSearch(query: String){
+        viewModelScope.launch {
+            persons.value = api.personsearch(query, "166e544a3195c0c362b7c9294e90775d", "fr")
+        }
+    }
+
+    fun getMovieSearch(query: String){
+        viewModelScope.launch {
+            movies.value = api.moviesearch(query, "166e544a3195c0c362b7c9294e90775d", "fr")
+        }
+    }
+
+    fun getSerieSearch(query: String){
+        viewModelScope.launch {
+            series.value = api.seriesearch(query, "166e544a3195c0c362b7c9294e90775d", "fr")
         }
     }
 }

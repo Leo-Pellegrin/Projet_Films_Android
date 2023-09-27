@@ -34,19 +34,19 @@ fun PersonsScreen(navController: NavController){
     val mainViewModel: MainViewModel = viewModel()
     Scaffold(
         topBar = {
-            TopNavBar()
+            TopNavBar(navController)
         },
         bottomBar = {
             BottomNavBar(navController)
         }
     ){
-        ListPersons(mainViewModel)
+        ListPersons(mainViewModel, navController)
     }
 }
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun ListPersons(PersonsVM: MainViewModel) {
+fun ListPersons(PersonsVM: MainViewModel, navController: NavController) {
     val persons by PersonsVM.persons.collectAsState()
 
     if (persons.results.isEmpty()) {
@@ -55,7 +55,7 @@ fun ListPersons(PersonsVM: MainViewModel) {
     if (persons.results.isNotEmpty()) {
         LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.padding(top = 60.dp, bottom = 60.dp)) {
             items(persons.results) { person ->
-                FloatingActionButton(onClick = { }, modifier = Modifier.padding(20.dp), containerColor = Color.White) {
+                FloatingActionButton(onClick = {navController.navigate("DetailPerson/${person.id}") }, modifier = Modifier.padding(20.dp), containerColor = Color.White) {
                     Column( verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.fillMaxSize()){
