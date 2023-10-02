@@ -15,6 +15,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,17 +35,30 @@ import java.util.Locale
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovieScreen(navController: NavController){
+fun MovieScreen(navController: NavController, windowclass : WindowSizeClass){
     val mainViewModel: MainViewModel = viewModel()
-    Scaffold(
-        topBar = {
-            TopNavBar(navController)
-        },
-        bottomBar = {
-            BottomNavBar(navController)
+    when(windowclass.widthSizeClass){
+        WindowWidthSizeClass.Compact -> {
+            Scaffold(
+                topBar = {
+                    TopNavBar(navController)
+                },
+                bottomBar = {
+                    BottomNavBar(navController, filmsBool = true)
+                }
+            ){
+                ListFilms(mainViewModel, navController)
+            }
         }
-    ){
-        ListFilms(mainViewModel, navController)
+        else -> {
+            Scaffold(
+                bottomBar = {
+                    LeftNavBar(navController, filmsBool = true)
+                }
+            ){
+                ListFilms(mainViewModel, navController)
+            }
+        }
     }
 }
 

@@ -14,6 +14,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -30,17 +32,30 @@ import coil.compose.rememberImagePainter
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PersonsScreen(navController: NavController){
+fun PersonsScreen(navController: NavController, windowclass: WindowSizeClass){
     val mainViewModel: MainViewModel = viewModel()
-    Scaffold(
-        topBar = {
-            TopNavBar(navController)
-        },
-        bottomBar = {
-            BottomNavBar(navController)
+    when(windowclass.widthSizeClass){
+        WindowWidthSizeClass.Compact -> {
+            Scaffold(
+                topBar = {
+                    TopNavBar(navController)
+                },
+                bottomBar = {
+                    BottomNavBar(navController, personsBool = true)
+                }
+            ){
+                ListPersons(mainViewModel, navController)
+            }
         }
-    ){
-        ListPersons(mainViewModel, navController)
+        else ->{
+            Scaffold(
+                bottomBar = {
+                    LeftNavBar(navController, personsBool = true)
+                }
+            ){
+                ListPersons(mainViewModel, navController)
+            }
+        }
     }
 }
 

@@ -3,9 +3,12 @@ package com.example.premire_application_android
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.BottomAppBar
@@ -13,6 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -36,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
-
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun TopNavBar(navController: NavController) {
@@ -47,7 +50,7 @@ fun TopNavBar(navController: NavController) {
 
     TopAppBar(
         title = {
-            Text(text = if (searchActive) "" else "Films") // Masquer le texte quand la recherche est active
+            Text(text = if (searchActive) "" else "TMDB") // Masquer le texte quand la recherche est active
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = Color.Blue,
@@ -118,7 +121,24 @@ fun TopNavBar(navController: NavController) {
 
 
 @Composable
-fun BottomNavBar(navController: NavController){
+fun BottomNavBar(navController: NavController, filmsBool: Boolean = false, seriesBool: Boolean = false, personsBool: Boolean = false){
+    val tintMovie = if (filmsBool) {
+        Color.White
+    } else {
+        Color(0xFFb3b1b1) // Vous pouvez définir une autre couleur par défaut si nécessaire
+    }
+
+    val tintSerie = if(seriesBool){
+        Color.White
+    } else {
+        Color(0xFFb3b1b1)
+    }
+
+    val tintPerson = if(personsBool){
+        Color.White
+    } else {
+        Color(0xFFb3b1b1)
+    }
     BottomAppBar(
         containerColor = Color.Blue,
         actions = {
@@ -130,9 +150,9 @@ fun BottomNavBar(navController: NavController){
                         Icon(
                             painter = painterResource(id = R.drawable.movie_white_24dp),
                             contentDescription = "Localized description",
-                            tint = Color.White
+                            tint = tintMovie
                         )
-                        Text(text = "Films", color = Color.White, fontSize = 10.sp)
+                        Text(text = "Films", color = tintMovie, fontSize = 10.sp)
                     }
                 }
                 IconButton(onClick = { navController.navigate("SeriesScreen") }) {
@@ -141,9 +161,9 @@ fun BottomNavBar(navController: NavController){
                         Icon(
                             painter = painterResource(id = R.drawable.desktop_windows_white_24dp),
                             contentDescription = "Localized description",
-                            tint = Color.White
+                            tint = tintSerie
                         )
-                        Text(text = "Séries", color = Color.White, fontSize = 10.sp)
+                        Text(text = "Séries", color = tintSerie, fontSize = 10.sp)
                     }
                 }
                 IconButton(onClick = { navController.navigate("PersonsScreen") }) {
@@ -152,12 +172,79 @@ fun BottomNavBar(navController: NavController){
                         Icon(
                             painter = painterResource(id = R.drawable.person_white_24dp),
                             contentDescription = "Localized description",
-                            tint = Color.White
+                            tint = tintPerson
                         )
-                        Text(text = "Acteurs", color = Color.White, fontSize = 10.sp)
+                        Text(text = "Acteurs", color = tintPerson, fontSize = 10.sp)
                     }
                 }
             }
         },
     )
 }
+
+@Composable
+fun LeftNavBar(navController: NavController, filmsBool: Boolean = false, seriesBool: Boolean = false, personsBool: Boolean = false){
+    val tintMovie = if (filmsBool) {
+        Color.Black
+    } else {
+        Color.LightGray // Vous pouvez définir une autre couleur par défaut si nécessaire
+    }
+
+    val tintSerie = if(seriesBool){
+        Color.Black
+    } else {
+        Color.LightGray
+    }
+
+    val tintPerson = if(personsBool){
+        Color.Black
+    } else {
+        Color.LightGray
+    }
+
+    Surface(
+        modifier = Modifier.fillMaxHeight().width(56.dp), // Width of the vertical AppBar
+        color = Color.White,
+        shadowElevation = 4.dp
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceEvenly
+        ){
+            IconButton(onClick = { navController.navigate("MovieScreen") }) {
+                Column(verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.movie_white_24dp),
+                        contentDescription = "Localized description",
+                        tint = tintMovie
+                    )
+                    Text(text = "Films", color = tintMovie, fontSize = 10.sp)
+                }
+            }
+            IconButton(onClick = { navController.navigate("SeriesScreen") }) {
+                Column(verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.desktop_windows_white_24dp),
+                        contentDescription = "Localized description",
+                        tint = tintSerie
+                    )
+                    Text(text = "Séries", color = tintSerie, fontSize = 10.sp)
+                }
+            }
+            IconButton(onClick = { navController.navigate("PersonsScreen") }) {
+                Column(verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally){
+                    Icon(
+                        painter = painterResource(id = R.drawable.person_white_24dp),
+                        contentDescription = "Localized description",
+                        tint = tintPerson
+                    )
+                    Text(text = "Acteurs", color = tintPerson, fontSize = 10.sp)
+                }
+            }
+        }
+    }
+}
+
