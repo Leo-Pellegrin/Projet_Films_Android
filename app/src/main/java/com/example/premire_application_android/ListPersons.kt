@@ -44,7 +44,8 @@ fun PersonsScreen(navController: NavController, windowclass: WindowSizeClass){
                     BottomNavBar(navController, personsBool = true)
                 }
             ){
-                ListPersons(mainViewModel, navController)
+                val modifier = Modifier.padding(top = 60.dp, bottom = 60.dp)
+                ListPersons(mainViewModel, navController, nbColumns = 2, modifier = modifier)
             }
         }
         else ->{
@@ -53,7 +54,8 @@ fun PersonsScreen(navController: NavController, windowclass: WindowSizeClass){
                     LeftNavBar(navController, personsBool = true)
                 }
             ){
-                ListPersons(mainViewModel, navController)
+                val modifier = Modifier.padding(start = 45.dp)
+                ListPersons(mainViewModel, navController, nbColumns = 3, modifier = modifier)
             }
         }
     }
@@ -61,14 +63,14 @@ fun PersonsScreen(navController: NavController, windowclass: WindowSizeClass){
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun ListPersons(PersonsVM: MainViewModel, navController: NavController) {
+fun ListPersons(PersonsVM: MainViewModel, navController: NavController, nbColumns: Int = 2, modifier: Modifier) {
     val persons by PersonsVM.persons.collectAsState()
 
     if (persons.results.isEmpty()) {
         PersonsVM.getPersonsInitiaux()
     }
     if (persons.results.isNotEmpty()) {
-        LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.padding(top = 60.dp, bottom = 60.dp)) {
+        LazyVerticalGrid(columns = GridCells.Fixed(nbColumns), modifier = modifier) {
             items(persons.results) { person ->
                 FloatingActionButton(onClick = {navController.navigate("DetailPerson/${person.id}") }, modifier = Modifier.padding(20.dp), containerColor = Color.White) {
                     Column( verticalArrangement = Arrangement.Center,

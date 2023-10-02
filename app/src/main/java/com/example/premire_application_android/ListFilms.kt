@@ -47,7 +47,8 @@ fun MovieScreen(navController: NavController, windowclass : WindowSizeClass){
                     BottomNavBar(navController, filmsBool = true)
                 }
             ){
-                ListFilms(mainViewModel, navController)
+                val modifier = Modifier.padding(top = 60.dp, bottom = 60.dp)
+                ListFilms(mainViewModel, navController, modifier = modifier)
             }
         }
         else -> {
@@ -56,7 +57,8 @@ fun MovieScreen(navController: NavController, windowclass : WindowSizeClass){
                     LeftNavBar(navController, filmsBool = true)
                 }
             ){
-                ListFilms(mainViewModel, navController)
+                val modifier = Modifier.padding(start = 45.dp)
+                ListFilms(mainViewModel, navController, nbColumns = 3, modifier = modifier)
             }
         }
     }
@@ -64,14 +66,14 @@ fun MovieScreen(navController: NavController, windowclass : WindowSizeClass){
 
 @OptIn(ExperimentalCoilApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun ListFilms(filmVM: MainViewModel, navController: NavController) {
+fun ListFilms(filmVM: MainViewModel, navController: NavController, nbColumns: Int = 2, modifier: Modifier) {
     val movies by filmVM.movies.collectAsState()
 
     if (movies.results.isEmpty()) {
         filmVM.getFilmInitiaux()
     }
     if (movies.results.isNotEmpty()) {
-        LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.padding(top = 60.dp, bottom = 60.dp)) {
+        LazyVerticalGrid(columns = GridCells.Fixed(nbColumns), modifier = modifier) {
             items(movies.results) { movie ->
                 FloatingActionButton(
                     onClick = {navController.navigate("DetailMovie/${movie.id}")},

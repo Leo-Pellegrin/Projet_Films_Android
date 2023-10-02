@@ -1,6 +1,8 @@
 package com.example.premire_application_android
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -9,10 +11,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -182,6 +188,7 @@ fun BottomNavBar(navController: NavController, filmsBool: Boolean = false, serie
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun LeftNavBar(navController: NavController, filmsBool: Boolean = false, seriesBool: Boolean = false, personsBool: Boolean = false){
     val tintMovie = if (filmsBool) {
@@ -201,9 +208,10 @@ fun LeftNavBar(navController: NavController, filmsBool: Boolean = false, seriesB
     } else {
         Color.LightGray
     }
-
     Surface(
-        modifier = Modifier.fillMaxHeight().width(56.dp), // Width of the vertical AppBar
+        modifier = Modifier
+            .fillMaxHeight()
+            .width(56.dp), // Width of the vertical AppBar
         color = Color.White,
         shadowElevation = 4.dp
     ) {
@@ -243,6 +251,104 @@ fun LeftNavBar(navController: NavController, filmsBool: Boolean = false, seriesB
                     )
                     Text(text = "Acteurs", color = tintPerson, fontSize = 10.sp)
                 }
+            }
+        }
+    }
+
+    var searchActive  by remember { mutableStateOf(false) } // État pour indiquer si la recherche est active;
+    var searchText by remember { mutableStateOf("") } // État pour stocker le texte de recherche
+    val imeAction = rememberUpdatedState(ImeAction.Done)
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    if(searchActive) {
+        Column(
+            verticalArrangement = Arrangement.Top,
+            modifier = Modifier.fillMaxWidth().padding(15.dp)){
+            Card(
+                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                border = BorderStroke(2.dp, Color.DarkGray),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    IconButton(
+                        onClick = {
+                            searchActive = false
+                            searchText = "" // Effacer le texte de recherche
+                        },
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.cancel_white_24dp), // Icône de fermeture
+                            contentDescription = "Fermer la recherche",
+                            modifier = Modifier.size(35.dp).padding(top = 7.dp),
+                            tint = Color.Black
+                        )
+                    }
+                    TextField(
+                        value = searchText,
+                        onValueChange = { newText ->
+                            searchText = newText
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = imeAction.value
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                // Action de validation (Done) gérée ici
+                                keyboardController?.hide()
+                                navController.navigate("SearchScreen/${searchText}")
+                            }
+                        ),
+                        modifier = Modifier.padding(16.dp).weight(1f),
+                        textStyle = TextStyle(color = Color.Black, fontSize = 20.sp),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = Color.White,
+                            disabledContainerColor = Color.White,
+                            cursorColor = Color.White,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                        ),
+                    )
+                    IconButton(
+                        enabled = searchText != "",
+                        onClick = {
+                            searchActive = false
+                            navController.navigate("SearchScreen/${searchText}")
+                        },
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.search_icon),
+                            contentDescription = "Icone de recherche",
+                            modifier = Modifier.size(35.dp).padding(top = 7.dp),
+                            tint = Color.Black
+                        )
+                    }
+                }
+            }
+        }
+    }
+    else{
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            contentAlignment = Alignment.BottomEnd
+        ){
+            FloatingActionButton(onClick = { searchActive = !searchActive },
+                shape = CircleShape,
+                containerColor = Color(0xFF3bd7e3)) {
+                Icon(
+                    painter = painterResource(id = R.drawable.search_icon),
+                    contentDescription = "Icone de recherche",
+                    modifier = Modifier.size(24.dp),
+                    tint = Color.White
+                )
             }
         }
     }

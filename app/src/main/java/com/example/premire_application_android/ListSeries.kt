@@ -44,7 +44,8 @@ fun SeriesScreen(navController: NavController, windowclass : WindowSizeClass){
                     BottomNavBar(navController, seriesBool = true)
                 }
             ){
-                ListSeries(mainViewModel, navController)
+                val modifier = Modifier.padding(top = 60.dp, bottom = 60.dp)
+                ListSeries(mainViewModel, navController, nbColumns = 2, modifier = modifier)
             }
         }
         else -> {
@@ -53,7 +54,8 @@ fun SeriesScreen(navController: NavController, windowclass : WindowSizeClass){
                     LeftNavBar(navController, seriesBool = true)
                 }
             ){
-                ListSeries(mainViewModel, navController)
+                val modifier = Modifier.padding(start = 45.dp)
+                ListSeries(mainViewModel, navController, nbColumns = 3, modifier = modifier)
             }
         }
     }
@@ -61,14 +63,14 @@ fun SeriesScreen(navController: NavController, windowclass : WindowSizeClass){
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun ListSeries(SeriesVM: MainViewModel, navController: NavController) {
+fun ListSeries(SeriesVM: MainViewModel, navController: NavController, nbColumns: Int = 2, modifier: Modifier) {
     val series by SeriesVM.series.collectAsState()
 
     if (series.results.isEmpty()) {
         SeriesVM.getSeriesInitiaux()
     }
     if (series.results.isNotEmpty()) {
-        LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.padding(top = 60.dp, bottom = 60.dp)) {
+        LazyVerticalGrid(columns = GridCells.Fixed(nbColumns), modifier = modifier) {
             items(series.results) { serie ->
                 FloatingActionButton(onClick = { navController.navigate("DetailSerie/${serie.id}")}, modifier = Modifier.padding(20.dp), containerColor = Color.White) {
                     Column( verticalArrangement = Arrangement.Center,
