@@ -59,7 +59,7 @@ fun TopNavBar(navController: NavController) {
             Text(text = if (searchActive) "" else "TMDB") // Masquer le texte quand la recherche est active
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
-            containerColor = Color.Blue,
+            containerColor = Color(0xFF6101EE),
             titleContentColor = Color.White
         ),
         modifier = Modifier.fillMaxWidth(),
@@ -81,6 +81,7 @@ fun TopNavBar(navController: NavController) {
                     )
                 }
                 // Champ de texte de recherche quand la recherche est active
+                val containerColor = Color(0xFF6101EE)
                 TextField(
                     value = searchText,
                     onValueChange = { newText ->
@@ -98,11 +99,13 @@ fun TopNavBar(navController: NavController) {
                     ),
                     modifier = Modifier.padding(16.dp),
                     textStyle = TextStyle(color = Color.White),
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.Blue,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = containerColor,
+                        unfocusedContainerColor = containerColor,
+                        disabledContainerColor = containerColor,
                         cursorColor = Color.White,
                         focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
+                        unfocusedIndicatorColor = Color.Transparent,
                     ),
                 )
             } else {
@@ -146,11 +149,11 @@ fun BottomNavBar(navController: NavController, filmsBool: Boolean = false, serie
         Color(0xFFb3b1b1)
     }
     BottomAppBar(
-        containerColor = Color.Blue,
+        containerColor = Color(0xFF6101EE),
         actions = {
             Row(modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly){
-                IconButton(onClick = { navController.navigate("MovieScreen") }) {
+                IconButton(onClick = { navController.navigate("MovieScreen") }, Modifier.size(75.dp)) {
                     Column(verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally,) {
                         Icon(
@@ -161,7 +164,7 @@ fun BottomNavBar(navController: NavController, filmsBool: Boolean = false, serie
                         Text(text = "Films", color = tintMovie, fontSize = 10.sp)
                     }
                 }
-                IconButton(onClick = { navController.navigate("SeriesScreen") }) {
+                IconButton(onClick = { navController.navigate("SeriesScreen") }, Modifier.size(75.dp)) {
                     Column(verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally,) {
                         Icon(
@@ -172,7 +175,7 @@ fun BottomNavBar(navController: NavController, filmsBool: Boolean = false, serie
                         Text(text = "Séries", color = tintSerie, fontSize = 10.sp)
                     }
                 }
-                IconButton(onClick = { navController.navigate("PersonsScreen") }) {
+                IconButton(onClick = { navController.navigate("PersonsScreen") }, Modifier.size(75.dp)) {
                     Column(verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally){
                         Icon(
@@ -192,19 +195,19 @@ fun BottomNavBar(navController: NavController, filmsBool: Boolean = false, serie
 @Composable
 fun LeftNavBar(navController: NavController, filmsBool: Boolean = false, seriesBool: Boolean = false, personsBool: Boolean = false){
     val tintMovie = if (filmsBool) {
-        Color.Black
+        Color(0xFF6101EE)
     } else {
         Color.LightGray // Vous pouvez définir une autre couleur par défaut si nécessaire
     }
 
     val tintSerie = if(seriesBool){
-        Color.Black
+        Color(0xFF6101EE)
     } else {
         Color.LightGray
     }
 
     val tintPerson = if(personsBool){
-        Color.Black
+        Color(0xFF6101EE)
     } else {
         Color.LightGray
     }
@@ -219,7 +222,7 @@ fun LeftNavBar(navController: NavController, filmsBool: Boolean = false, seriesB
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly
         ){
-            IconButton(onClick = { navController.navigate("MovieScreen") }) {
+            IconButton(onClick = { navController.navigate("MovieScreen") }, Modifier.size(75.dp)) {
                 Column(verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,) {
                     Icon(
@@ -230,7 +233,7 @@ fun LeftNavBar(navController: NavController, filmsBool: Boolean = false, seriesB
                     Text(text = "Films", color = tintMovie, fontSize = 10.sp)
                 }
             }
-            IconButton(onClick = { navController.navigate("SeriesScreen") }) {
+            IconButton(onClick = { navController.navigate("SeriesScreen") }, Modifier.size(75.dp)) {
                 Column(verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,) {
                     Icon(
@@ -241,7 +244,7 @@ fun LeftNavBar(navController: NavController, filmsBool: Boolean = false, seriesB
                     Text(text = "Séries", color = tintSerie, fontSize = 10.sp)
                 }
             }
-            IconButton(onClick = { navController.navigate("PersonsScreen") }) {
+            IconButton(onClick = { navController.navigate("PersonsScreen") }, Modifier.size(75.dp)) {
                 Column(verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally){
                     Icon(
@@ -342,12 +345,12 @@ fun LeftNavBar(navController: NavController, filmsBool: Boolean = false, seriesB
         ){
             FloatingActionButton(onClick = { searchActive = !searchActive },
                 shape = CircleShape,
-                containerColor = Color(0xFF3bd7e3)) {
+                containerColor = Color(0xFF00DAC5)) {
                 Icon(
                     painter = painterResource(id = R.drawable.search_icon),
                     contentDescription = "Icone de recherche",
                     modifier = Modifier.size(24.dp),
-                    tint = Color.White
+                    tint = Color.Black
                 )
             }
         }

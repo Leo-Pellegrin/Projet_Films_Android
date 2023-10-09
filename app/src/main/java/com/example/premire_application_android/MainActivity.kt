@@ -60,11 +60,11 @@ fun Screen(windowclass : WindowSizeClass){
         }
         composable("DetailPerson/{personid}"){ backStackEntry ->
             val personId = backStackEntry.arguments?.getString("personid") ?: ""
-            DetailPerson(navController, personId)
+            DetailPerson(personId)
         }
         composable("SearchScreen/{search}"){ backStackEntry ->
             val search = backStackEntry.arguments?.getString("search") ?: ""
-            SearchScreen(navController, search)
+            SearchScreen(navController, search, windowclass)
         }
     }
 }

@@ -37,11 +37,10 @@ fun DetailMovie(navController: NavController, movieId: String) {
     val MovieDetailVM: MainViewModel = viewModel()
     val movie by MovieDetailVM.movie.collectAsState()
 
-    if(movie.title == ""){
+    if (movie.title == "") {
         MovieDetailVM.getMovieDetail(movieId)
     }
     if (movie.title != "") {
-        //Column Globale
         LazyColumn() {
             // Titre + Image de fond du film
             item {
@@ -73,7 +72,7 @@ fun DetailMovie(navController: NavController, movieId: String) {
             item {
                 Row(
                     verticalAlignment = Alignment.Top,
-                    horizontalArrangement = Arrangement.Start
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     Image(
                         painter = rememberImagePainter(
@@ -129,12 +128,8 @@ fun DetailMovie(navController: NavController, movieId: String) {
                     )
                 }
             }
-            // Têtes d'affiches
-            item {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(start = 10.dp)
-                ){
+            if(movie.credits.cast.isNotEmpty()){
+                item {
                     Text(
                         text = "Têtes d'affiches",
                         color = Color.Black,
@@ -143,48 +138,48 @@ fun DetailMovie(navController: NavController, movieId: String) {
                         modifier = Modifier.padding(top = 15.dp, end = 15.dp)
                     )
                 }
-            }
-            items(movie.credits.cast.take(10)){ cast ->
-                FloatingActionButton(
-                    onClick = { navController.navigate("DetailPerson/${cast.id}") },
-                    modifier = Modifier.padding(20.dp),
-                    containerColor = Color.White,
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxSize()
+                items(movie.credits.cast.take(10)){ cast ->
+                    FloatingActionButton(
+                        onClick = { navController.navigate("DetailPerson/${cast.id}") },
+                        modifier = Modifier.padding(20.dp),
+                        containerColor = Color.White,
                     ) {
                         Column(
                             verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            Image(
-                                painter = rememberImagePainter(
-                                    data = "https://image.tmdb.org/t/p/w780" + cast.profile_path,
-                                    builder = {
-                                        crossfade(true)
-                                        size(
-                                            350,
-                                            400
-                                        )
-                                    }),
-                                contentDescription = "Image film ${cast.name}",
-                                Modifier.padding(start = 5.dp, end = 5.dp)
-                            )
-                            Text(
-                                text = cast.name,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.Black,
-                                fontSize = 20.sp,
-                                modifier = Modifier.padding(top = 5.dp)
-                            )
-                            Text(
-                                text = cast.character,
-                                color = Color.Black,
-                                fontSize = 18.sp,
-                                modifier = Modifier.padding(top = 15.dp)
-                            )
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                Image(
+                                    painter = rememberImagePainter(
+                                        data = "https://image.tmdb.org/t/p/w780" + cast.profile_path,
+                                        builder = {
+                                            crossfade(true)
+                                            size(
+                                                350,
+                                                400
+                                            )
+                                        }),
+                                    contentDescription = "Image film ${cast.name}",
+                                    Modifier.padding(start = 5.dp, end = 5.dp)
+                                )
+                                Text(
+                                    text = cast.name,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Black,
+                                    fontSize = 20.sp,
+                                    modifier = Modifier.padding(top = 5.dp)
+                                )
+                                Text(
+                                    text = cast.character,
+                                    color = Color.Black,
+                                    fontSize = 18.sp,
+                                    modifier = Modifier.padding(top = 15.dp)
+                                )
+                            }
                         }
                     }
                 }
@@ -192,7 +187,6 @@ fun DetailMovie(navController: NavController, movieId: String) {
         }
     }
 }
-
 
 fun getGenres(genres: List<Genre>): String {
     var genresString = ""

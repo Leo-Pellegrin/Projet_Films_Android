@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,15 +20,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import java.util.Locale
+import java.util.regex.Pattern
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-fun DetailPerson(navController: NavController, movieId: String) {
+fun DetailPerson(movieId: String) {
     val PersonDetailMV: MainViewModel = viewModel()
     val person by PersonDetailMV.person.collectAsState()
 
@@ -39,7 +38,7 @@ fun DetailPerson(navController: NavController, movieId: String) {
     if (person.name != "") {
         //Column Globale
         Column(verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = CenterHorizontally,
             modifier = Modifier.verticalScroll(rememberScrollState())) {
             // Nom de la personne
             Column(
@@ -70,7 +69,7 @@ fun DetailPerson(navController: NavController, movieId: String) {
         // Affiche + Date de sortie + Genre
             Column(
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = CenterHorizontally
             ) {
                 if (person.gender == 1) {
                     Text(
@@ -89,7 +88,11 @@ fun DetailPerson(navController: NavController, movieId: String) {
                         modifier = Modifier.padding(top = 15.dp, end = 15.dp)
                     )
                 }
-                if(person.place_of_birth != "" && person.birthday != ""){
+                var checkBirthday = false
+                if(person.birthday != null){
+                    checkBirthday = Pattern.matches("^\\d{4}-\\d{2}-\\d{2}\$\n", person.birthday)
+                }
+                if(person.place_of_birth != "" && checkBirthday){
                     Text(
                         text = "Lieu de naissance : " + person.place_of_birth,
                         fontStyle = FontStyle.Italic,
@@ -109,7 +112,7 @@ fun DetailPerson(navController: NavController, movieId: String) {
             }
         // Synopsis
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = CenterHorizontally,
                 modifier = Modifier.padding(start = 10.dp)
             ) {
                 if(person.biography != ""){

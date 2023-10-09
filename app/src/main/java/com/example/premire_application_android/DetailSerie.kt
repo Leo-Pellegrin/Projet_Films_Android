@@ -139,48 +139,48 @@ fun DetailSerie(navController: NavController, serieId: String) {
                         modifier = Modifier.padding(top = 15.dp, end = 15.dp)
                     )
                 }
-            }
-            items(serie.credits.cast.take(10)){ cast ->
-                FloatingActionButton(
-                    onClick = { navController.navigate("DetailPerson/${cast.id}") },
-                    modifier = Modifier.padding(20.dp),
-                    containerColor = Color.White,
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxSize()
+                items(serie.credits.cast.take(10)){ cast ->
+                    FloatingActionButton(
+                        onClick = { navController.navigate("DetailPerson/${cast.id}") },
+                        modifier = Modifier.padding(20.dp),
+                        containerColor = Color.White,
                     ) {
                         Column(
                             verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier.fillMaxSize()
                         ) {
-                            Image(
-                                painter = rememberImagePainter(
-                                    data = "https://image.tmdb.org/t/p/w780" + cast.profile_path,
-                                    builder = {
-                                        crossfade(true)
-                                        size(
-                                            350,
-                                            400
-                                        )
-                                    }),
-                                contentDescription = "Image film ${cast.name}",
-                                Modifier.padding(start = 5.dp, end = 5.dp)
-                            )
-                            Text(
-                                text = cast.name,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.Black,
-                                fontSize = 20.sp,
-                                modifier = Modifier.padding(top = 5.dp)
-                            )
-                            Text(
-                                text = cast.character,
-                                color = Color.Black,
-                                fontSize = 18.sp,
-                                modifier = Modifier.padding(top = 15.dp)
-                            )
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                Image(
+                                    painter = rememberImagePainter(
+                                        data = "https://image.tmdb.org/t/p/w780" + cast.profile_path,
+                                        builder = {
+                                            crossfade(true)
+                                            size(
+                                                350,
+                                                400
+                                            )
+                                        }),
+                                    contentDescription = "Image film ${cast.name}",
+                                    Modifier.padding(start = 5.dp, end = 5.dp)
+                                )
+                                Text(
+                                    text = cast.name,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Black,
+                                    fontSize = 20.sp,
+                                    modifier = Modifier.padding(top = 5.dp)
+                                )
+                                Text(
+                                    text = cast.character,
+                                    color = Color.Black,
+                                    fontSize = 18.sp,
+                                    modifier = Modifier.padding(top = 15.dp)
+                                )
+                            }
                         }
                     }
                 }

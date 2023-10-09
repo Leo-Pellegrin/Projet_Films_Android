@@ -34,15 +34,15 @@ fun HomeScreen(windowclass : WindowSizeClass, navController: NavController){
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                PersonalPicture();
-                TitreNom();
-                TitreDescription();
-                DescriptionEcole();
-                EspaceBlanc();
-                TexteMail();
-                TexteLinkedin();
-                EspaceBlanc();
-                EspaceBlanc();
+                PersonalPicture()
+                TitreNom()
+                TitreDescription()
+                DescriptionEcole()
+                EspaceBlanc()
+                TexteMail()
+                TexteLinkedin()
+                EspaceBlanc()
+                EspaceBlanc()
                 BoutonDemarrer(navController)
             }
         }
@@ -57,19 +57,19 @@ fun HomeScreen(windowclass : WindowSizeClass, navController: NavController){
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
-                    PersonalPicture();
-                    TitreNom();
-                    TitreDescription();
-                    DescriptionEcole();
+                    PersonalPicture()
+                    TitreNom()
+                    TitreDescription()
+                    DescriptionEcole()
                 }
                 Column(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
-                    TexteMail();
-                    TexteLinkedin();
-                    EspaceBlanc();
+                    TexteMail()
+                    TexteLinkedin()
+                    EspaceBlanc()
                     BoutonDemarrer(navController)
                 }
             }
@@ -151,7 +151,6 @@ fun TexteLinkedin(){
 
 @Composable
 fun BoutonDemarrer(navController: NavController){
-
     Button(onClick = { navController.navigate("MovieScreen")}) {
         Text(text = "Démarrer")
     }
