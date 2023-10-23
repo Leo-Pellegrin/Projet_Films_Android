@@ -86,7 +86,7 @@ fun ListSeries(SeriesVM: MainViewModel, navController: NavController, nbColumns:
                                         200
                                     )
                                 }),
-                            contentDescription = "Image film ${serie.name}"
+                            contentDescription = "Image Series ${serie.name}"
                         )
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,

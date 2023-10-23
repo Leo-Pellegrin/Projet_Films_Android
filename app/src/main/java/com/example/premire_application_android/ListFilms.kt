@@ -2,7 +2,6 @@ package com.example.premire_application_android
 
 import MainViewModel
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -116,9 +115,10 @@ fun ListFilms(filmVM: MainViewModel, navController: NavController, nbColumns: In
 fun formatDate(inputDate: String, inputDateFormat: String, outputDateFormat: String, locale: Locale): String {
     val inputFormat = SimpleDateFormat(inputDateFormat, locale)
     val outputFormat = SimpleDateFormat(outputDateFormat, locale)
-    Log.d("date", inputDate)
-    Log.d("date", inputFormat.toString())
-    val date = inputFormat.parse(inputDate)
-    return outputFormat.format(date)
+    if(inputDate != ""){
+        val date = inputFormat.parse(inputDate)
+        return outputFormat.format(date)
+    }
+    return ""
 }
 

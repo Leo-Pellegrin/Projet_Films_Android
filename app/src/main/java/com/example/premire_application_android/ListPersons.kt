@@ -86,7 +86,7 @@ fun ListPersons(PersonsVM: MainViewModel, navController: NavController, nbColumn
                                         200
                                     )
                                 }),
-                            contentDescription = "Image film ${person.name}"
+                            contentDescription = "Image Person ${person.name}"
                         )
                         Text(text = person.name,
                             fontWeight = FontWeight.Bold,

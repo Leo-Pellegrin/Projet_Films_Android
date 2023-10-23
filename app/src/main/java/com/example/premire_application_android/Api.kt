@@ -1,5 +1,7 @@
 package com.example.premire_application_android
 
+import PersonDetailMovie
+import PersonDetailSerie
 import TmdbMovieDetail
 import TmdbMovieResult
 import TmdbPersonDetail
@@ -28,7 +30,10 @@ interface api {
 
     @GET("person/{id}?append_to_response=credits")
     suspend fun persondetails(@Path("id") id: String, @Query("api_key") api_key: String, @Query("language") language: String): TmdbPersonDetail
-
+    @GET("person/{id}/movie_credits?append_to_response=credits")
+    suspend fun personmoviedetails(@Path("id") id: String, @Query("api_key") api_key: String, @Query("language") language: String): PersonDetailMovie
+    @GET("person/{id}/tv_credits?append_to_response=credits")
+    suspend fun persontvdetails(@Path("id") id: String, @Query("api_key") api_key: String, @Query("language") language: String): PersonDetailSerie
     @GET("search/person")
     suspend fun personsearch(@Query("query") query: String, @Query("api_key")api_key: String, @Query("language") language: String): TmdbPersonResult
 
